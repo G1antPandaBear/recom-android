@@ -19,10 +19,9 @@ class StartActivity : AppCompatActivity() {
         performDataBinding()
     }
 
-    fun onClickStartButtons(mode: Int) {
+    fun onClickStartButtons() {
         // 모드 0은 솔로, 모드 1은 단체
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("mode", mode)
         startActivity(intent)
     }
 

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel" />
@@ -19,10 +18,10 @@
             android:id="@+id/layout_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:layout_marginHorizontal="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -31,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_b"
-                android:text= "@string/title_state"
+                android:text="@string/title_state"
                 android:textColor="@color/color_black"
                 android:textSize="15sp" />
 
@@ -39,11 +38,11 @@
                 android:id="@+id/tv_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
+                android:layout_marginStart="5dp"
                 android:fontFamily="@font/nanum_b"
+                android:maxLines="1"
                 android:textColor="@color/color_black"
                 android:textSize="15sp"
-                android:layout_marginStart="5dp"
                 tools:text="오류 발생" />
 
         </LinearLayout>
@@ -54,9 +53,10 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            tools:listitem="@layout/item_speech"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layout_bottom"
-            app:layout_constraintTop_toBottomOf="@id/layout_state" />
+            app:layout_constraintTop_toBottomOf="@id/layout_state"
+            tools:listitem="@layout/item_speech" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_bottom"
@@ -72,13 +72,46 @@
             android:id="@+id/btn_play"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:onClick="@{() -> vm.onClickPlay()}"
             android:background="@drawable/background_record_button"
+            android:onClick="@{() -> vm.onClickPlay()}"
             app:layout_constraintBottom_toTopOf="@id/layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/layout_bottom" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/background_start_button"
+            android:backgroundTint="@color/color_main700"
+            android:elevation="5dp"
+            android:fontFamily="@font/nanum_r"
+            android:onClick="@{() -> vm.saveMeetingRecord()}"
+            android:text="@string/text_save"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+            app:layout_constraintStart_toEndOf="@id/btn_play"
+            app:layout_constraintTop_toTopOf="@id/layout_bottom" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_clear"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> vm.onClickClear()}"
+            android:background="@drawable/background_start_button"
+            android:backgroundTint="@color/color_main500"
+            android:elevation="5dp"
+            android:fontFamily="@font/nanum_r"
+            android:text="@string/clear"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+            app:layout_constraintEnd_toStartOf="@id/btn_play"
+            app:layout_constraintTop_toTopOf="@id/layout_bottom" />
 
         <ImageView
             android:id="@+id/iv_play"

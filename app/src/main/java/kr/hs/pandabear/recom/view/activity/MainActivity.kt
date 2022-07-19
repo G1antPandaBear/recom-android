@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import kr.hs.pandabear.recom.databinding.ActivityMainBinding
 import kr.hs.pandabear.recom.view.base.BaseActivity
-import kr.hs.pandabear.recom.view.fragment.EveryFragment
 import kr.hs.pandabear.recom.view.fragment.SoloFragment
 import kr.hs.pandabear.recom.viewmodel.activity.MainViewModel
 
@@ -57,19 +57,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     private fun beginTransaction() {
-        val fragment: Fragment = selectFragment()
+        val fragment: Fragment = SoloFragment()
         supportFragmentManager.beginTransaction()
             .add(mBinding.fragmentContainerView.id, fragment)
             .commit()
-    }
-
-    private fun selectFragment(): Fragment {
-        val intent = intent
-        return when (intent.getIntExtra("mode", -1)) {
-            0 -> SoloFragment()
-            1 -> EveryFragment()
-            else -> SoloFragment()
-        }
     }
 
     companion object {

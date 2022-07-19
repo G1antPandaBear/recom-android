@@ -8,7 +8,9 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collect
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
@@ -23,10 +25,14 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private lateinit var recognizerIntent: Intent
     private lateinit var adapter: SpeechAdapter
     private var isFirstUsed: Boolean = true
+    var code: String = ""
+
+    val speechList: ArrayList<SpeechInfo> = ArrayList<SpeechInfo>()
 
     override fun observerViewModel() {
         setSpeechRecognizer()
         setSpeechRecycler()
+        collectDocument()
 
         with(viewModel) {
             isEnd.observe(this@SoloFragment) {
@@ -51,6 +57,34 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                         SoloViewModel.EVENT_ON_CLICK_PLAY -> {
                             onClickPlayButton()
                         }
+                        SoloViewModel.EVENT_ON_CLICK_CLEAR -> {
+                            speechList.clear()
+                            adapter.submitList(speechList)
+                        }
+                        SoloViewModel.EVENT_ON_CLICK_SAVE -> {
+                            val currentList = adapter.currentList
+                            if (adapter.currentList.isEmpty()) {
+                                Toast.makeText(requireContext(), "값이 없어요..ㅠ", Toast.LENGTH_SHORT)
+                                    .show()
+                                return@observe
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectDocument() {
+        with(viewModel) {
+            lifecycleScope.launchWhenStarted {
+                saveRecordState.collect { state ->
+                    if (state.document != null) {
+                        code = state.document.code
+                    }
+
+                    if (state.error.isNotBlank()) {
+                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -149,13 +183,13 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 .replace("]", "")
             Log.e("asdf", "onResults: $matches")
 
-            val dataList: ArrayList<SpeechInfo> = ArrayList()
+            /*val dataList: ArrayList<SpeechInfo> = ArrayList()
             adapter.currentList.forEach {
                 dataList.add(it)
-            }
-            dataList.add(SpeechInfo(matches))
+            }*/
+            speechList.add(SpeechInfo(matches))
             mBinding.rcSpeech.smoothScrollToPosition(adapter.itemCount)
-            adapter.submitList(dataList)
+            adapter.submitList(speechList)
         }
 
         override fun onPartialResults(p0: Bundle?) {}
@@ -184,7 +218,6 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 isFirstUsed = false
             }
             speechRecognizer.startListening(recognizerIntent)
-
         }
     }
 
