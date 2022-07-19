@@ -2,6 +2,7 @@ package kr.hs.pandabear.recom.viewmodel.fragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kr.hs.pandabear.recom.network.model.speech.Document
 import kr.hs.pandabear.recom.network.service.DocumentService
@@ -13,6 +14,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
+@HiltViewModel
 class SoloViewModel @Inject constructor(
     private val service: DocumentService
 ) : BaseViewModel() {

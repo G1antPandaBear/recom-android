@@ -8,4 +8,5 @@
     <string name="title_state">상태 :</string>
     <string name="text_save">저장</string>
     <string name="clear">클리어</string>
+    <string name="text_show_clear_document">정리된 문서 보기</string>
 </resources>

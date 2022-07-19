@@ -9,7 +9,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
@@ -17,6 +20,7 @@ import kr.hs.pandabear.recom.view.base.BaseFragment
 import kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     override val viewModel: SoloViewModel by viewModels()
 
@@ -80,8 +84,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             lifecycleScope.launchWhenStarted {
                 saveRecordState.collect { state ->
                     if (state.document != null) {
-                        // TODO : 다음으로 넘어가기
-
+                        val navAction = SoloFragmentDirections.actionSoloFragmentToResultFragment(code)
+                        findNavController().navigate(navAction)
                     }
 
                     if (state.error.isNotBlank()) {
