@@ -5,21 +5,30 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
+import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
+import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
 import kr.hs.pandabear.recom.view.base.BaseFragment
-import kr.hs.pandabear.recom.viewmodel.activity.MainViewModel
 import kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     override val viewModel: SoloViewModel by viewModels()
 
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var recognizerIntent: Intent
+    private lateinit var adapter: SpeechAdapter
+
 
     override fun observerViewModel() {
         setSpeechRecognizer()
+        setSpeechRecycler()
     }
 
     override fun bindingViewEvent() {
@@ -38,8 +47,31 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
     private fun setSpeechRecognizer() {
         recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, requireContext().packageName)
+        recognizerIntent.putExtra(
+            RecognizerIntent.EXTRA_CALLING_PACKAGE,
+            requireContext().packageName
+        )
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+    }
+
+    private fun setSpeechRecycler() {
+        adapter = SpeechAdapter()
+        mBinding.rcSpeech.adapter = adapter
+        val manager = LinearLayoutManager(requireContext())
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
+        mBinding.rcSpeech.layoutManager = manager
+        val dataList = mutableListOf<SpeechInfo>()
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("안녕"))
+        dataList.add(SpeechInfo("두두두등장"))
+        adapter.submitList(dataList)
     }
 
     private fun onClickPlayButton() {
@@ -50,7 +82,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
     private val recognitionListener: RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
-            mBinding.tvState.text = "이제 말씁하세요!"
+            mBinding.tvState.text = "이제 말씀하세요!"
         }
 
         override fun onBeginningOfSpeech() {
@@ -68,7 +100,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         }
 
         override fun onError(error: Int) {
-           val message = when (error) {
+            val message = when (error) {
                 SpeechRecognizer.ERROR_AUDIO -> "오디오 에러"
                 SpeechRecognizer.ERROR_CLIENT -> "클라이언트 에러"
                 SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "퍼미션 없음"
@@ -84,7 +116,18 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         }
 
         override fun onResults(results: Bundle?) {
-            val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            val matches: String = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                .toString()
+                .replace("[", "")
+                .replace("]", "")
+
+            val dataList: ArrayList<SpeechInfo> = ArrayList()
+            adapter.currentList.forEach {
+                dataList.add(it)
+            }
+            dataList.add(SpeechInfo(matches))
+            mBinding.rcSpeech.smoothScrollToPosition(adapter.itemCount)
+            adapter.submitList(dataList)
         }
 
         override fun onPartialResults(p0: Bundle?) {}
