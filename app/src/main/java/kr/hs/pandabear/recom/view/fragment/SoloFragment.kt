@@ -185,8 +185,6 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             }
             speechRecognizer.startListening(recognizerIntent)
 
-        } else {
-            mBinding.soundVisualizerView.stopVisualizing()
         }
     }
 
