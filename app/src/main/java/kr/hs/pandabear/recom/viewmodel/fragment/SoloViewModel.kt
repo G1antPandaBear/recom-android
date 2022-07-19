@@ -41,6 +41,10 @@ class SoloViewModel @Inject constructor(
         viewEvent(EVENT_ON_CLICK_SAVE)
     }
 
+    fun setEndToTrue() {
+        _isEnd.value = true
+    }
+
     fun saveMeetingRecord() {
         useSendData().onEach { result ->
             when(result) {

@@ -20,7 +20,7 @@
             app:cardElevation="5dp"
             app:cardCornerRadius="10dp"
             android:layout_margin="15dp"
-            android:backgroundTint="@{speech.impact == true ? @color/main700 : @color/color_white}"
+            android:backgroundTint="@{speech.impact == true ? @color/color_main700 : @color/color_white}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,6 +35,7 @@
                 android:gravity="top|left"
                 android:lineSpacingExtra="3dp"
                 android:fontFamily="@font/nanum_acr"
+                android:text="@{speech.speech}"
                 tools:text="이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.."
                 tools:ignore="RtlHardcoded" />
         </androidx.cardview.widget.CardView>

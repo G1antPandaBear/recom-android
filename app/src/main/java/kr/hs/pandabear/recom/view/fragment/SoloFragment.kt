@@ -9,12 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
@@ -65,6 +62,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                             adapter.notifyDataSetChanged()
                         }
                         SoloViewModel.EVENT_ON_CLICK_SAVE -> {
+                            setEndToTrue()
                             if (adapter.currentList.isEmpty()) {
                                 Toast.makeText(requireContext(), "값이 없어요..ㅠ", Toast.LENGTH_SHORT)
                                     .show()

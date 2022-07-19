@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="vm"
             type="kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel" />
@@ -13,6 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_background">
+
+        <include
+            android:id="@+id/progress_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}"
+            layout="@layout/item_loading_progressbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
             android:id="@+id/layout_state"
@@ -53,6 +65,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
+            android:visibility="@{vm.isLoading ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layout_bottom"
             app:layout_constraintTop_toBottomOf="@id/layout_state"
@@ -74,6 +87,7 @@
             android:layout_height="70dp"
             android:background="@drawable/background_record_button"
             android:onClick="@{() -> vm.onClickPlay()}"
+            android:enabled="@{vm.isLoading ? false : true}"
             app:layout_constraintBottom_toTopOf="@id/layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +100,7 @@
             android:layout_marginStart="5dp"
             android:background="@drawable/background_start_button"
             android:backgroundTint="@color/color_main700"
+            android:enabled="@{vm.isLoading ? false : true}"
             android:elevation="5dp"
             android:fontFamily="@font/nanum_r"
             android:onClick="@{() -> vm.onClickSave()}"
@@ -102,6 +117,7 @@
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
             android:onClick="@{() -> vm.onClickClear()}"
+            android:enabled="@{vm.isLoading ? false : true}"
             android:background="@drawable/background_start_button"
             android:backgroundTint="@color/color_main500"
             android:elevation="5dp"
