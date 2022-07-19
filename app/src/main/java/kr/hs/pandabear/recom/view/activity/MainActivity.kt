@@ -4,12 +4,18 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.ActivityMainBinding
 import kr.hs.pandabear.recom.view.base.BaseActivity
-import kr.hs.pandabear.recom.view.fragment.EveryFragment
 import kr.hs.pandabear.recom.view.fragment.SoloFragment
 import kr.hs.pandabear.recom.viewmodel.activity.MainViewModel
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val viewModel: MainViewModel by viewModels()
 
@@ -19,7 +25,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun observerViewModel() {
         requestAudioPermission()
-        beginTransaction()
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
     }
 
     override fun bindingViewEvent() {
@@ -56,21 +64,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         requestPermissions(requiredPermission, REQUEST_RECORD_AUDIO_PERMISSION)
     }
 
+/*
     private fun beginTransaction() {
-        val fragment: Fragment = selectFragment()
+        val fragment: Fragment = SoloFragment()
         supportFragmentManager.beginTransaction()
             .add(mBinding.fragmentContainerView.id, fragment)
             .commit()
-    }
-
-    private fun selectFragment(): Fragment {
-        val intent = intent
-        return when (intent.getIntExtra("mode", -1)) {
-            0 -> SoloFragment()
-            1 -> EveryFragment()
-            else -> SoloFragment()
-        }
-    }
+    }*/
 
     companion object {
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 200

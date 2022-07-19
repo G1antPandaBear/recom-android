@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import dagger.hilt.android.AndroidEntryPoint
 import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.ActivityStartBinding
 import java.lang.reflect.ParameterizedType
@@ -19,10 +20,9 @@ class StartActivity : AppCompatActivity() {
         performDataBinding()
     }
 
-    fun onClickStartButtons(mode: Int) {
+    fun onClickStartButtons() {
         // 모드 0은 솔로, 모드 1은 단체
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("mode", mode)
         startActivity(intent)
     }
 

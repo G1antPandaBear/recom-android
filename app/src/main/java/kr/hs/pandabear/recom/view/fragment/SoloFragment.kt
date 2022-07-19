@@ -8,7 +8,13 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
@@ -16,6 +22,7 @@ import kr.hs.pandabear.recom.view.base.BaseFragment
 import kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     override val viewModel: SoloViewModel by viewModels()
 
@@ -23,10 +30,12 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private lateinit var recognizerIntent: Intent
     private lateinit var adapter: SpeechAdapter
     private var isFirstUsed: Boolean = true
+    var code: String = ""
 
     override fun observerViewModel() {
         setSpeechRecognizer()
         setSpeechRecycler()
+        collectDocument()
 
         with(viewModel) {
             isEnd.observe(this@SoloFragment) {
@@ -51,6 +60,37 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                         SoloViewModel.EVENT_ON_CLICK_PLAY -> {
                             onClickPlayButton()
                         }
+                        SoloViewModel.EVENT_ON_CLICK_CLEAR -> {
+                            adapter.submitList(listOf())
+                            adapter.notifyDataSetChanged()
+                        }
+                        SoloViewModel.EVENT_ON_CLICK_SAVE -> {
+                            if (adapter.currentList.isEmpty()) {
+                                Toast.makeText(requireContext(), "값이 없어요..ㅠ", Toast.LENGTH_SHORT)
+                                    .show()
+                                return@observe
+                            }
+                            viewModel.content.value = convertToString(adapter.currentList)
+                            viewModel.saveMeetingRecord()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectDocument() {
+        with(viewModel) {
+            lifecycleScope.launchWhenStarted {
+                saveRecordState.collect { state ->
+                    if (state.document != null) {
+                        Log.d("TestTest", "collectDocument: document is not null ${state.document.code}")
+                        val navAction = SoloFragmentDirections.actionSoloFragmentToResultFragment(state.document.code)
+                        findNavController().navigate(navAction)
+                    }
+
+                    if (state.error.isNotBlank()) {
+                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -103,7 +143,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
         override fun onRmsChanged(sound: Float) {
             mBinding.soundVisualizerView.onRequestCurrentAmplitude =
-                { sound.toInt()*1789 }
+                { sound.toInt()*1678 }
         }
 
         override fun onBufferReceived(p0: ByteArray?) {}
@@ -184,10 +224,16 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 isFirstUsed = false
             }
             speechRecognizer.startListening(recognizerIntent)
-
-        } else {
-            mBinding.soundVisualizerView.stopVisualizing()
         }
+    }
+
+    private fun convertToString(recordList: List<SpeechInfo>): String {
+        val recordStr = StringBuilder()
+        recordList.forEach {
+            recordStr.append(it.speech)
+            recordStr.append("\\")
+        }
+        return recordStr.toString()
     }
 
     override fun onStop() {
