@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,8 +31,6 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private lateinit var adapter: SpeechAdapter
     private var isFirstUsed: Boolean = true
     var code: String = ""
-
-    val speechList: ArrayList<SpeechInfo> = ArrayList<SpeechInfo>()
 
     override fun observerViewModel() {
         setSpeechRecognizer()
@@ -61,8 +61,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                             onClickPlayButton()
                         }
                         SoloViewModel.EVENT_ON_CLICK_CLEAR -> {
-                            speechList.clear()
-                            adapter.submitList(speechList)
+                            adapter.submitList(listOf())
+                            adapter.notifyDataSetChanged()
                         }
                         SoloViewModel.EVENT_ON_CLICK_SAVE -> {
                             if (adapter.currentList.isEmpty()) {
@@ -84,7 +84,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             lifecycleScope.launchWhenStarted {
                 saveRecordState.collect { state ->
                     if (state.document != null) {
-                        val navAction = SoloFragmentDirections.actionSoloFragmentToResultFragment(code)
+                        Log.d("TestTest", "collectDocument: document is not null ${state.document.code}")
+                        val navAction = SoloFragmentDirections.actionSoloFragmentToResultFragment(state.document.code)
                         findNavController().navigate(navAction)
                     }
 
@@ -142,7 +143,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
         override fun onRmsChanged(sound: Float) {
             mBinding.soundVisualizerView.onRequestCurrentAmplitude =
-                { sound.toInt()*1789 }
+                { sound.toInt()*1678 }
         }
 
         override fun onBufferReceived(p0: ByteArray?) {}
@@ -188,13 +189,13 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 .replace("]", "")
             Log.e("asdf", "onResults: $matches")
 
-            /*val dataList: ArrayList<SpeechInfo> = ArrayList()
+            val dataList: ArrayList<SpeechInfo> = ArrayList()
             adapter.currentList.forEach {
                 dataList.add(it)
-            }*/
-            speechList.add(SpeechInfo(matches))
+            }
+            dataList.add(SpeechInfo(matches))
             mBinding.rcSpeech.smoothScrollToPosition(adapter.itemCount)
-            adapter.submitList(speechList)
+            adapter.submitList(dataList)
         }
 
         override fun onPartialResults(p0: Bundle?) {}

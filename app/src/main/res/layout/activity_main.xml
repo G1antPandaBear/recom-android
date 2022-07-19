@@ -18,16 +18,19 @@
 
         <include
             android:id="@+id/btn_back"
-            android:onClick="@{() -> vm.onClickBackEvent()}"
-            layout="@layout/item_back_button" />
+            layout="@layout/item_back_button"
+            android:onClick="@{() -> vm.onClickBackEvent()}" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view"
+            android:id="@+id/fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="15dp"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_back" />
+            app:layout_constraintTop_toBottomOf="@id/btn_back"
+            app:navGraph="@navigation/nav_graph" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

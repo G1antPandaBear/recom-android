@@ -2,6 +2,7 @@ package kr.hs.pandabear.recom.viewmodel.fragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kr.hs.pandabear.recom.network.model.speech.Document
@@ -56,13 +57,13 @@ class SoloViewModel @Inject constructor(
                     _saveRecordState.value = SaveRecordState(error = result.message ?: "문서를 받아오지 못하였습니다.")
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
     
     private fun useSendData() : Flow<Resource<Document>> = flow {
         try {
             emit(Resource.Loading())
-            val result = service.saveData(content.value ?: "").data
+            val result = service.saveData(content.value ?: "")
             emit(Resource.Success<Document>(result))
         } catch (e: HttpException) {
             emit(Resource.Error<Document>(convertErrorBody(e)))

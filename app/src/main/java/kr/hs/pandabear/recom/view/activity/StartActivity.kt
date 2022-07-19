@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import dagger.hilt.android.AndroidEntryPoint
 import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.ActivityStartBinding
 import java.lang.reflect.ParameterizedType
