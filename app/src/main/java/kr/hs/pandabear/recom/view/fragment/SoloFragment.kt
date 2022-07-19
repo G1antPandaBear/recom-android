@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
 import kr.hs.pandabear.recom.view.base.BaseFragment
 import kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel
-import java.util.*
 import kotlin.collections.ArrayList
 
 class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
@@ -24,7 +21,6 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var recognizerIntent: Intent
     private lateinit var adapter: SpeechAdapter
-
 
     override fun observerViewModel() {
         setSpeechRecognizer()
@@ -61,7 +57,9 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         manager.reverseLayout = true
         manager.stackFromEnd = true
         mBinding.rcSpeech.layoutManager = manager
-        val dataList = mutableListOf<SpeechInfo>()
+
+        // Test 더미 데이터
+        /*val dataList = mutableListOf<SpeechInfo>()
         dataList.add(SpeechInfo("안녕"))
         dataList.add(SpeechInfo("안녕"))
         dataList.add(SpeechInfo("안녕"))
@@ -71,7 +69,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         dataList.add(SpeechInfo("안녕"))
         dataList.add(SpeechInfo("안녕"))
         dataList.add(SpeechInfo("두두두등장"))
-        adapter.submitList(dataList)
+        adapter.submitList(dataList)*/
     }
 
     private fun onClickPlayButton() {
@@ -83,6 +81,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private val recognitionListener: RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
             mBinding.tvState.text = "이제 말씀하세요!"
+            mBinding.soundVisualizerView.startVisualizing(false)
         }
 
         override fun onBeginningOfSpeech() {
@@ -90,12 +89,14 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         }
 
         override fun onRmsChanged(sound: Float) {
-
+            mBinding.soundVisualizerView.onRequestCurrentAmplitude =
+                { sound.toInt()*1789 }
         }
 
         override fun onBufferReceived(p0: ByteArray?) {}
 
         override fun onEndOfSpeech() {
+            mBinding.soundVisualizerView.stopVisualizing()
             mBinding.tvState.text = "끝"
         }
 
