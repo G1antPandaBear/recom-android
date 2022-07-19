@@ -71,9 +71,9 @@ class SoundVisualizerView(
 
                 canvas.drawLine(
                     offsetX,
-                    centerY - lineLength / 2F,
+                    centerY - lineLength / 1.3F,
                     offsetX,
-                    centerY + lineLength / 2F,
+                    centerY + lineLength / 1.3F,
                     amplitudePaint
                 )
             }

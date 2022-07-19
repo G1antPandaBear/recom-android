@@ -6,6 +6,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
@@ -21,10 +22,25 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var recognizerIntent: Intent
     private lateinit var adapter: SpeechAdapter
+    private var isFirstUsed: Boolean = true
 
     override fun observerViewModel() {
         setSpeechRecognizer()
         setSpeechRecycler()
+
+        with(viewModel) {
+            isEnd.observe(this@SoloFragment) {
+                if (isEnd.value == true) {
+                    speechRecognizer.stopListening()
+                    speechRecognizer.cancel()
+
+                    mBinding.soundVisualizerView.stopVisualizing()
+                    mBinding.soundVisualizerView.clearVisualization()
+
+                    isFirstUsed = true
+                }
+            }
+        }
     }
 
     override fun bindingViewEvent() {
@@ -48,6 +64,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             requireContext().packageName
         )
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
     }
 
     private fun setSpeechRecycler() {
@@ -72,19 +90,14 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         adapter.submitList(dataList)*/
     }
 
-    private fun onClickPlayButton() {
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
-        speechRecognizer.setRecognitionListener(recognitionListener)
-        speechRecognizer.startListening(recognizerIntent)
-    }
-
     private val recognitionListener: RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
+            Log.e("asdf", "onReady")
             mBinding.tvState.text = "이제 말씀하세요!"
-            mBinding.soundVisualizerView.startVisualizing(false)
         }
 
         override fun onBeginningOfSpeech() {
+            Log.e("asdf", "begin")
             mBinding.tvState.text = "잘 듣고 있어요."
         }
 
@@ -96,19 +109,31 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         override fun onBufferReceived(p0: ByteArray?) {}
 
         override fun onEndOfSpeech() {
-            mBinding.soundVisualizerView.stopVisualizing()
-            mBinding.tvState.text = "끝"
+            Log.e("asdf", "onEndOfSpeech", )
+            if (viewModel.isEnd.value == true) {
+                mBinding.tvState.text = "녹음을 완료하였습니다."
+            } else {
+                replay()
+            }
         }
 
         override fun onError(error: Int) {
             val message = when (error) {
                 SpeechRecognizer.ERROR_AUDIO -> "오디오 에러"
-                SpeechRecognizer.ERROR_CLIENT -> "클라이언트 에러"
+                SpeechRecognizer.ERROR_CLIENT -> "녹음이 종료되었습니다."
                 SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "퍼미션 없음"
                 SpeechRecognizer.ERROR_NETWORK -> "네트워크 에러"
                 SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "네트웍 타임아웃"
-                SpeechRecognizer.ERROR_NO_MATCH -> "찾을 수 없음"
-                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RECOGNIZER 가 바쁨"
+                SpeechRecognizer.ERROR_NO_MATCH -> {
+                    Log.e("asdf-nomatch", "no match")
+                    replay()
+                    "말씀을 해주세요"
+                }
+                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> {
+                    Log.e("asdf", "busy")
+                    replay()
+                    "말씀이 너무 복잡해요.."
+                }
                 SpeechRecognizer.ERROR_SERVER -> "서버가 이상함"
                 SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "말하는 시간초과"
                 else -> "알 수 없는 오류"
@@ -117,10 +142,12 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         }
 
         override fun onResults(results: Bundle?) {
+            Log.e("asdf", "onResult")
             val matches: String = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 .toString()
                 .replace("[", "")
                 .replace("]", "")
+            Log.e("asdf", "onResults: $matches")
 
             val dataList: ArrayList<SpeechInfo> = ArrayList()
             adapter.currentList.forEach {
@@ -134,6 +161,40 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         override fun onPartialResults(p0: Bundle?) {}
 
         override fun onEvent(p0: Int, p1: Bundle?) {}
+
+        private fun replay() {
+            Log.e("asdf", "replay in")
+            if (isFirstUsed) {
+                isFirstUsed = false
+            } else {
+                speechRecognizer.cancel()
+            }
+            onClickPlayButton()
+        }
     }
 
+    private fun onClickPlayButton() {
+        Log.e("asdf", "onClick Playbtn")
+        if(viewModel.isEnd.value == false) {
+            if (isFirstUsed) {
+                Toast.makeText(requireContext(), "테스트를 해주세요!", Toast.LENGTH_SHORT).show()
+                speechRecognizer.setRecognitionListener(recognitionListener)
+                mBinding.soundVisualizerView.startVisualizing(false)
+
+                isFirstUsed = false
+            }
+            speechRecognizer.startListening(recognizerIntent)
+
+        } else {
+            mBinding.soundVisualizerView.stopVisualizing()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        speechRecognizer.destroy()
+        mBinding.soundVisualizerView.stopVisualizing()
+        mBinding.soundVisualizerView.clearVisualization()
+    }
 }
