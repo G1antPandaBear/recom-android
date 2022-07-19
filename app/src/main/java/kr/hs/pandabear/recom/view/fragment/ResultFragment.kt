@@ -13,9 +13,10 @@ import kr.hs.pandabear.recom.widget.Constants
 class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
     override val viewModel: ResultViewModel by viewModels()
     private val args: ResultFragmentArgs by navArgs()
+    lateinit var uriString: String
 
     override fun observerViewModel() {
-        Toast.makeText(requireContext(), "${args.code}", Toast.LENGTH_SHORT).show()
+        uriString = Constants.BASE_URL + "document/" + args.code
     }
 
     override fun bindingViewEvent() {
@@ -24,15 +25,10 @@ class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
                 it.getContentIfNotHandled()?.let { event ->
                     when (event) {
                         ResultViewModel.EVENT_ON_CLICK_SHOW -> {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(
-                                    Constants.BASE_URL +
-                                            "document/" +
-                                            args.code
-                                )
-                            )
-                            startActivity(intent)
+                            turnToWeb()
+                        }
+                        ResultViewModel.EVENT_ON_CLICK_SHARE -> {
+                            openShare()
                         }
                     }
                 }
@@ -40,4 +36,17 @@ class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
         }
     }
 
+    private fun turnToWeb() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
+        startActivity(intent)
+    }
+
+    private fun openShare() {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, uriString)
+
+        val shareIntent = Intent.createChooser(intent, "회의 공유하기")
+        startActivity(shareIntent)
+    }
 }

@@ -9,8 +9,13 @@ class ResultViewModel : BaseViewModel() {
         viewEvent(EVENT_ON_CLICK_SHOW)
     }
 
+    fun onClickShare() {
+        viewEvent(EVENT_ON_CLICK_SHARE)
+    }
+
     companion object {
         const val EVENT_ON_CLICK_SHOW = 0
+        const val EVENT_ON_CLICK_SHARE = 1
     }
 
 }

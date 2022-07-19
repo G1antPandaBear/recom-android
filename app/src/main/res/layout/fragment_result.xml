@@ -61,7 +61,7 @@
             android:src="@drawable/ic_share"
             android:elevation="5dp"
             app:tint="@color/color_main"
-            
+
             app:layout_constraintEnd_toEndOf="@id/btn_share"
             app:layout_constraintStart_toStartOf="@id/btn_share"
             app:layout_constraintTop_toTopOf="@id/btn_share"
