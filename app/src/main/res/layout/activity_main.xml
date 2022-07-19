@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="kr.hs.pandabear.recom.viewmodel.activity.MainViewModel" />
@@ -15,14 +16,18 @@
         android:background="@color/color_background"
         tools:context=".view.activity.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
+        <include
+            android:id="@+id/btn_back"
+            android:onClick="@{() -> vm.onClickBackEvent()}"
+            layout="@layout/item_back_button" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btn_back" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
