@@ -34,6 +34,10 @@ class SoloViewModel @Inject constructor(
         viewEvent(EVENT_ON_CLICK_CLEAR)
     }
 
+    fun onClickSave() {
+        viewEvent(EVENT_ON_CLICK_SAVE)
+    }
+
     fun saveMeetingRecord() {
         useSendData().onEach { result ->
             when(result) {
@@ -73,5 +77,6 @@ class SoloViewModel @Inject constructor(
     companion object {
         const val EVENT_ON_CLICK_PLAY = 1
         const val EVENT_ON_CLICK_CLEAR = 2
+        const val EVENT_ON_CLICK_SAVE = 3
     }
 }

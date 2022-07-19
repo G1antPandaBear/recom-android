@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.flow.collect
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
@@ -62,12 +61,13 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                             adapter.submitList(speechList)
                         }
                         SoloViewModel.EVENT_ON_CLICK_SAVE -> {
-                            val currentList = adapter.currentList
                             if (adapter.currentList.isEmpty()) {
                                 Toast.makeText(requireContext(), "값이 없어요..ㅠ", Toast.LENGTH_SHORT)
                                     .show()
                                 return@observe
                             }
+                            viewModel.content.value = convertToString(adapter.currentList)
+                            viewModel.saveMeetingRecord()
                         }
                     }
                 }
@@ -80,7 +80,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             lifecycleScope.launchWhenStarted {
                 saveRecordState.collect { state ->
                     if (state.document != null) {
-                        code = state.document.code
+                        // TODO : 다음으로 넘어가기
+
                     }
 
                     if (state.error.isNotBlank()) {
@@ -219,6 +220,15 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             }
             speechRecognizer.startListening(recognizerIntent)
         }
+    }
+
+    private fun convertToString(recordList: List<SpeechInfo>): String {
+        val recordStr = StringBuilder()
+        recordList.forEach {
+            recordStr.append(it.speech)
+            recordStr.append("\\")
+        }
+        return recordStr.toString()
     }
 
     override fun onStop() {
