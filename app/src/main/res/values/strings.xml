@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">recom</string>
+    <string name="app_name_big">RECOM</string>
+    <string name="text_app_desc">Record the Meeting</string>
+    <string name="text_app_desc_kr">우리들의 목소리를 문서로</string>
+    <string name="text_solo_record">개인 녹음하기</string>
+    <string name="text_every_record">단체 녹음하기</string>
 </resources>
