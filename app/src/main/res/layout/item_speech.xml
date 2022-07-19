@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="speech"
+            type="kr.hs.pandabear.recom.network.model.speech.SpeechInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_speech"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tv_speech"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/color_black"
+                android:layout_margin="15dp"
+                android:gravity="top|left"
+                android:lineSpacingExtra="3dp"
+                android:fontFamily="@font/nanum_acr"
+                tools:text="이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.."
+                tools:ignore="RtlHardcoded" />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
