@@ -230,6 +230,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private fun convertToString(recordList: List<SpeechInfo>): String {
         val recordStr = StringBuilder()
         recordList.forEach {
+            if (it.isImpact)
+                recordStr.append("#")
             recordStr.append(it.speech)
             recordStr.append("\\")
         }
