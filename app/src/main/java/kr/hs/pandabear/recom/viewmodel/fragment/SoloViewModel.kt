@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kr.hs.pandabear.recom.network.model.speech.Document
+import kr.hs.pandabear.recom.network.request.SaveDataRequest
 import kr.hs.pandabear.recom.network.service.DocumentService
 import kr.hs.pandabear.recom.viewmodel.base.BaseViewModel
 import kr.hs.pandabear.recom.viewmodel.state.SaveRecordState
@@ -25,8 +26,10 @@ class SoloViewModel @Inject constructor(
 
     private val _saveRecordState = MutableStateFlow<SaveRecordState>(SaveRecordState(isLoading = false))
     val saveRecordState: StateFlow<SaveRecordState> = _saveRecordState
-    
+
     val content = MutableLiveData<String>()
+    val title = MutableLiveData<String>()
+    val address = MutableLiveData<String>()
 
     fun onClickPlay() {
         _isEnd.value = _isEnd.value?.not()
@@ -39,6 +42,10 @@ class SoloViewModel @Inject constructor(
 
     fun onClickSave() {
         viewEvent(EVENT_ON_CLICK_SAVE)
+    }
+
+    fun setEndToTrue() {
+        _isEnd.value = true
     }
 
     fun saveMeetingRecord() {
@@ -63,7 +70,14 @@ class SoloViewModel @Inject constructor(
     private fun useSendData() : Flow<Resource<Document>> = flow {
         try {
             emit(Resource.Loading())
-            val result = service.saveData(content.value ?: "")
+            val result = service.saveData(
+                SaveDataRequest (
+                    content.value ?: "",
+                    address.value ?: "대구광역시 달성군 구지면 창리로11길 93",
+                    title = title.value ?: "무제"
+                )
+
+            )
             emit(Resource.Success<Document>(result))
         } catch (e: HttpException) {
             emit(Resource.Error<Document>(convertErrorBody(e)))

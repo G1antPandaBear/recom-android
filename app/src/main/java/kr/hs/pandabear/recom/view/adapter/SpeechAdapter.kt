@@ -14,7 +14,12 @@ class SpeechAdapter : ListAdapter<SpeechInfo, SpeechAdapter.SpeechViewHolder>(Sp
 
     class SpeechViewHolder(private val binding: ItemSpeechBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: SpeechInfo) {
-            binding.tvSpeech.text = data.speech
+            binding.speech = data
+
+            binding.cardSpeech.setOnClickListener {
+                data.isImpact = data.isImpact.not()
+                binding.speech = data
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package kr.hs.pandabear.recom.viewmodel.fragment
 
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kr.hs.pandabear.recom.viewmodel.base.BaseViewModel
 
 class ResultViewModel : BaseViewModel() {
@@ -9,8 +8,13 @@ class ResultViewModel : BaseViewModel() {
         viewEvent(EVENT_ON_CLICK_SHOW)
     }
 
+    fun onClickShare() {
+        viewEvent(EVENT_ON_CLICK_SHARE)
+    }
+
     companion object {
         const val EVENT_ON_CLICK_SHOW = 0
+        const val EVENT_ON_CLICK_SHARE = 1
     }
 
 }
