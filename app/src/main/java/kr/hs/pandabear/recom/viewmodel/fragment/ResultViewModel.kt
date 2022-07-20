@@ -1,6 +1,5 @@
 package kr.hs.pandabear.recom.viewmodel.fragment
 
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kr.hs.pandabear.recom.viewmodel.base.BaseViewModel
 
 class ResultViewModel : BaseViewModel() {

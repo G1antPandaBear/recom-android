@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.network.model.speech.SpeechInfo
+import kr.hs.pandabear.recom.view.activity.MainActivity
 import kr.hs.pandabear.recom.view.adapter.SpeechAdapter
 import kr.hs.pandabear.recom.view.base.BaseFragment
 import kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel
@@ -63,6 +64,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                         }
                         SoloViewModel.EVENT_ON_CLICK_SAVE -> {
                             setEndToTrue()
+                            getValueInMainActivity()
                             if (adapter.currentList.isEmpty()) {
                                 Toast.makeText(requireContext(), "값이 없어요..ㅠ", Toast.LENGTH_SHORT)
                                     .show()
@@ -234,6 +236,12 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             recordStr.append("\\")
         }
         return recordStr.toString()
+    }
+
+    private fun getValueInMainActivity() {
+        viewModel.title.value = (activity as MainActivity).subject
+        viewModel.address.value = (activity as MainActivity).address
+        Log.d("TestTest", "getValueInMainActivity: ${viewModel.address.value}")
     }
 
     override fun onStop() {
