@@ -13,11 +13,13 @@ class SaveDocumentUseCase @Inject constructor(
 ) : ParamsUseCase<SaveDocumentUseCase.Params, Document>() {
 
     override fun invoke(params: Params): Flow<Resource<Document>> = execute {
-        documentRepository.saveDocument(SaveDocumentRequest(
-            content = params.content,
-            address = params.address,
-            title = params.title
-        ))
+        documentRepository.saveDocument(
+            SaveDocumentRequest(
+                content = params.content,
+                address = params.address,
+                title = params.title
+            )
+        )
     }
 
     data class Params(
@@ -25,5 +27,4 @@ class SaveDocumentUseCase @Inject constructor(
         val address: String,
         val title: String
     )
-
 }

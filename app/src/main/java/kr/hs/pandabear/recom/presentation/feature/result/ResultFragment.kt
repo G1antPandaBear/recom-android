@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import kr.hs.pandabear.recom.data.utils.Constants
 import kr.hs.pandabear.recom.databinding.FragmentResultBinding
 import kr.hs.pandabear.recom.presentation.base.BaseFragment
-import kr.hs.pandabear.recom.data.utils.Constants
 
 class ResultFragment : BaseFragment<FragmentResultBinding, ResultViewModel>() {
     override val viewModel: ResultViewModel by viewModels()

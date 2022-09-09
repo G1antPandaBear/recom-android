@@ -34,5 +34,4 @@ class NetworkModule {
             .callbackExecutor(Executors.newSingleThreadExecutor())
             .build()
     }
-
 }

@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import kr.hs.pandabear.recom.BR
 import kr.hs.pandabear.recom.R
 import java.lang.reflect.ParameterizedType
-import java.util.*
+import java.util.Locale
+import java.util.Objects
 
 abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment() {
 
@@ -25,14 +26,14 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment
     protected open val hasBottomNav: Boolean = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
             layoutRes(),
-            container
-            , false
+            container, false
         )!!
         return binding.root
     }

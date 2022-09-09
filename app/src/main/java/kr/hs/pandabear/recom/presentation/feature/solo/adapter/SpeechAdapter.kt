@@ -3,7 +3,6 @@ package kr.hs.pandabear.recom.presentation.feature.solo.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.hs.pandabear.recom.R
@@ -13,7 +12,7 @@ import kr.hs.pandabear.recom.presentation.feature.solo.adapter.callback.SpeechDi
 
 class SpeechAdapter : ListAdapter<SpeechInfo, SpeechAdapter.SpeechViewHolder>(SpeechDiffUtilCallback) {
 
-    class SpeechViewHolder(private val binding: ItemSpeechBinding): RecyclerView.ViewHolder(binding.root) {
+    class SpeechViewHolder(private val binding: ItemSpeechBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: SpeechInfo) {
             binding.speech = data
 

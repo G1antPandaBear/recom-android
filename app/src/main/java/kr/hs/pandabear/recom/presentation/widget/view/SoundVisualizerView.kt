@@ -100,5 +100,4 @@ class SoundVisualizerView(
         private const val MAX_AMPLITUDE = Short.MAX_VALUE.toFloat()
         private const val ACTION_INTERVAL = 20L
     }
-
 }

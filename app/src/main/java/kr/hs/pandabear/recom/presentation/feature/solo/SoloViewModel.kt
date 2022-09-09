@@ -4,17 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kr.hs.pandabear.recom.domain.model.document.Document
-import kr.hs.pandabear.recom.domain.request.SaveDocumentRequest
-import kr.hs.pandabear.recom.data.network.service.DocumentService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
 import kr.hs.pandabear.recom.domain.usecase.document.SaveDocumentUseCase
 import kr.hs.pandabear.recom.presentation.base.BaseViewModel
 import kr.hs.pandabear.recom.presentation.feature.solo.state.SaveRecordState
-import kr.hs.pandabear.recom.domain.utils.Resource
-import org.json.JSONObject
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,14 +45,16 @@ class SoloViewModel @Inject constructor(
     }
 
     fun saveMeetingRecord() {
-        saveDocumentUseCase(SaveDocumentUseCase.Params(
-            content = content.value ?: return,
-            address = address.value ?: return,
-            title = title.value ?: "무제"
-        )).divideResult(
+        saveDocumentUseCase(
+            SaveDocumentUseCase.Params(
+                content = content.value ?: return,
+                address = address.value ?: return,
+                title = title.value ?: "무제"
+            )
+        ).divideResult(
             { _saveRecordState.value = SaveRecordState(document = it, isLoading = false) },
             { _saveRecordState.value = SaveRecordState(isLoading = true) },
-            { _saveRecordState.value = SaveRecordState(error = it ?: "문서를 받아오지 못하였습니다.", isLoading = false)}
+            { _saveRecordState.value = SaveRecordState(error = it ?: "문서를 받아오지 못하였습니다.", isLoading = false) }
         ).launchIn(viewModelScope)
     }
 

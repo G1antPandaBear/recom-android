@@ -13,5 +13,4 @@ class DocumentRepositoryImpl @Inject constructor(
     override suspend fun saveDocument(saveDocumentRequest: SaveDocumentRequest): Document {
         return documentRemote.saveDocument(saveDocumentRequest)
     }
-
 }

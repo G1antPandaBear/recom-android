@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.hs.pandabear.recom.databinding.FragmentSoloBinding
 import kr.hs.pandabear.recom.domain.model.speech.SpeechInfo
+import kr.hs.pandabear.recom.presentation.base.BaseFragment
 import kr.hs.pandabear.recom.presentation.feature.main.MainActivity
 import kr.hs.pandabear.recom.presentation.feature.solo.adapter.SpeechAdapter
-import kr.hs.pandabear.recom.presentation.base.BaseFragment
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -94,7 +94,6 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                         binding.btnPlay.isEnabled = false
                         binding.btnClear.isEnabled = false
                         binding.btnClear.isEnabled = false
-
                     } else {
                         binding.progressLoading.visibility = View.GONE
                         binding.rcSpeech.visibility = View.VISIBLE
@@ -157,13 +156,13 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
         override fun onRmsChanged(sound: Float) {
             binding.soundVisualizerView.onRequestCurrentAmplitude =
-                { sound.toInt()*1678 }
+                { sound.toInt() * 1678 }
         }
 
         override fun onBufferReceived(p0: ByteArray?) {}
 
         override fun onEndOfSpeech() {
-            Log.e("asdf", "onEndOfSpeech", )
+            Log.e("asdf", "onEndOfSpeech",)
             if (viewModel.isEnd.value == true) {
                 binding.tvState.text = "녹음을 완료하였습니다."
             } else {
@@ -229,7 +228,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
     private fun onClickPlayButton() {
         Log.e("asdf", "onClick Playbtn")
-        if(viewModel.isEnd.value == false) {
+        if (viewModel.isEnd.value == false) {
             if (isFirstUsed) {
                 Toast.makeText(requireContext(), "테스트를 해주세요!", Toast.LENGTH_SHORT).show()
                 speechRecognizer.setRecognitionListener(recognitionListener)

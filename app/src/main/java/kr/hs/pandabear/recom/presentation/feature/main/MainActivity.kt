@@ -13,7 +13,7 @@ import kr.hs.pandabear.recom.R
 import kr.hs.pandabear.recom.databinding.ActivityMainBinding
 import kr.hs.pandabear.recom.presentation.base.BaseActivity
 import java.lang.Exception
-import java.util.*
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -61,8 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         val audioRecordPermissionGranted =
             requestCode == REQUEST_PERMISSION_CODE &&
-            grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
-
+                grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
 
         if (!audioRecordPermissionGranted) {
             finish()
@@ -72,7 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    private fun getGPSLocation() : String {
+    private fun getGPSLocation(): String {
         val locationManager: LocationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
         val currentLocation: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
         val lat = currentLocation.latitude // 위도

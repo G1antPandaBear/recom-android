@@ -16,5 +16,4 @@ class ResultViewModel : BaseViewModel() {
         const val EVENT_ON_CLICK_SHOW = 0
         const val EVENT_ON_CLICK_SHARE = 1
     }
-
 }

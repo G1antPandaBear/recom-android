@@ -15,5 +15,4 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideDocumentRepository(documentRepositoryImpl: DocumentRepositoryImpl): DocumentRepository = documentRepositoryImpl
-
 }

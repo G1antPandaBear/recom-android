@@ -6,5 +6,4 @@ import kr.hs.pandabear.recom.domain.utils.Resource
 abstract class ParamsUseCase<PR, R> : BaseUseCase<R>() {
 
     abstract operator fun invoke(params: PR): Flow<Resource<R>>
-
 }
