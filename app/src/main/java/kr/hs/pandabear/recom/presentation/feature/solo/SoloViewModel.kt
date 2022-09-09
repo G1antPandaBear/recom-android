@@ -6,11 +6,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kr.hs.pandabear.recom.domain.model.document.Document
-import kr.hs.pandabear.recom.domain.request.SaveDataRequest
-import kr.hs.pandabear.recom.data.remote.service.DocumentService
+import kr.hs.pandabear.recom.domain.request.SaveDocumentRequest
+import kr.hs.pandabear.recom.data.network.service.DocumentService
+import kr.hs.pandabear.recom.domain.usecase.document.SaveDocumentUseCase
 import kr.hs.pandabear.recom.presentation.base.BaseViewModel
 import kr.hs.pandabear.recom.presentation.feature.solo.state.SaveRecordState
-import kr.hs.pandabear.recom.presentation.widget.Resource
+import kr.hs.pandabear.recom.domain.utils.Resource
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SoloViewModel @Inject constructor(
-    private val service: DocumentService
+    private val saveDocumentUseCase: SaveDocumentUseCase
 ) : BaseViewModel() {
 
     private val _isEnd = MutableLiveData<Boolean>(true)
@@ -49,46 +50,15 @@ class SoloViewModel @Inject constructor(
     }
 
     fun saveMeetingRecord() {
-        useSendData().onEach { result ->
-            when(result) {
-                is Resource.Success -> {
-                    isLoading.value = false
-                    _saveRecordState.value = SaveRecordState(document = result.data)
-                }
-                is Resource.Loading -> {
-                    isLoading.value = true
-                    _saveRecordState.value = SaveRecordState(isLoading = true)
-                }
-                is Resource.Error -> {
-                    isLoading.value = false
-                    _saveRecordState.value = SaveRecordState(error = result.message ?: "문서를 받아오지 못하였습니다.")
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-    
-    private fun useSendData() : Flow<Resource<Document>> = flow {
-        try {
-            emit(Resource.Loading())
-            val result = service.saveData(
-                SaveDataRequest (
-                    content.value ?: "",
-                    address.value ?: "대구광역시 달성군 구지면 창리로11길 93",
-                    title = title.value ?: "무제"
-                )
-
-            )
-            emit(Resource.Success<Document>(result))
-        } catch (e: HttpException) {
-            emit(Resource.Error<Document>(convertErrorBody(e)))
-        } catch (e: IOException) {
-            Resource.Error<Document>("서버에 도달할 수 없습니다. 네트워크 상태를 확인해 주세요.")
-        }
-    }
-
-    private fun convertErrorBody(throwable: HttpException): String {
-        val errorBody = JSONObject(throwable.response()?.errorBody()!!.string())
-        return errorBody.getString("message")
+        saveDocumentUseCase(SaveDocumentUseCase.Params(
+            content = content.value ?: return,
+            address = address.value ?: return,
+            title = title.value ?: "무제"
+        )).divideResult(
+            { _saveRecordState.value = SaveRecordState(document = it, isLoading = false) },
+            { _saveRecordState.value = SaveRecordState(isLoading = true) },
+            { _saveRecordState.value = SaveRecordState(error = it ?: "문서를 받아오지 못하였습니다.", isLoading = false)}
+        ).launchIn(viewModelScope)
     }
 
     companion object {

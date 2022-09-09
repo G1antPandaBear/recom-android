@@ -12,7 +12,9 @@
     <color name="color_black">#000000</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_background">#efefef</color>
+    <color name="color_gray500">#777777</color>
     <color name="color_gray700">#494949</color>
+
 
     <color name="color_main">#927AC7</color>
     <color name="color_main500">#8165BF</color>

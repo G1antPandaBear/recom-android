@@ -6,6 +6,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,8 +41,8 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                     speechRecognizer.stopListening()
                     speechRecognizer.cancel()
 
-                    mBinding.soundVisualizerView.stopVisualizing()
-                    mBinding.soundVisualizerView.clearVisualization()
+                    binding.soundVisualizerView.stopVisualizing()
+                    binding.soundVisualizerView.clearVisualization()
 
                     isFirstUsed = true
                 }
@@ -83,9 +84,23 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             lifecycleScope.launchWhenStarted {
                 saveRecordState.collect { state ->
                     if (state.document != null) {
-                        Log.d("TestTest", "collectDocument: document is not null ${state.document.code}")
                         val navAction = SoloFragmentDirections.actionSoloFragmentToResultFragment(state.document.code)
                         findNavController().navigate(navAction)
+                    }
+
+                    if (state.isLoading) {
+                        binding.progressLoading.visibility = View.VISIBLE
+                        binding.rcSpeech.visibility = View.GONE
+                        binding.btnPlay.isEnabled = false
+                        binding.btnClear.isEnabled = false
+                        binding.btnClear.isEnabled = false
+
+                    } else {
+                        binding.progressLoading.visibility = View.GONE
+                        binding.rcSpeech.visibility = View.VISIBLE
+                        binding.btnPlay.isEnabled = true
+                        binding.btnClear.isEnabled = true
+                        binding.btnClear.isEnabled = true
                     }
 
                     if (state.error.isNotBlank()) {
@@ -109,11 +124,11 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
 
     private fun setSpeechRecycler() {
         adapter = SpeechAdapter()
-        mBinding.rcSpeech.adapter = adapter
+        binding.rcSpeech.adapter = adapter
         val manager = LinearLayoutManager(requireContext())
         manager.reverseLayout = true
         manager.stackFromEnd = true
-        mBinding.rcSpeech.layoutManager = manager
+        binding.rcSpeech.layoutManager = manager
 
         // Test 더미 데이터
         /*val dataList = mutableListOf<SpeechInfo>()
@@ -132,16 +147,16 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
     private val recognitionListener: RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
             Log.e("asdf", "onReady")
-            mBinding.tvState.text = "이제 말씀하세요!"
+            binding.tvState.text = "이제 말씀하세요!"
         }
 
         override fun onBeginningOfSpeech() {
             Log.e("asdf", "begin")
-            mBinding.tvState.text = "잘 듣고 있어요."
+            binding.tvState.text = "잘 듣고 있어요."
         }
 
         override fun onRmsChanged(sound: Float) {
-            mBinding.soundVisualizerView.onRequestCurrentAmplitude =
+            binding.soundVisualizerView.onRequestCurrentAmplitude =
                 { sound.toInt()*1678 }
         }
 
@@ -150,7 +165,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         override fun onEndOfSpeech() {
             Log.e("asdf", "onEndOfSpeech", )
             if (viewModel.isEnd.value == true) {
-                mBinding.tvState.text = "녹음을 완료하였습니다."
+                binding.tvState.text = "녹음을 완료하였습니다."
             } else {
                 replay()
             }
@@ -177,7 +192,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "말하는 시간초과"
                 else -> "알 수 없는 오류"
             }
-            mBinding.tvState.text = message
+            binding.tvState.text = message
         }
 
         override fun onResults(results: Bundle?) {
@@ -193,7 +208,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
                 dataList.add(it)
             }
             dataList.add(SpeechInfo(matches))
-            mBinding.rcSpeech.smoothScrollToPosition(adapter.itemCount)
+            binding.rcSpeech.smoothScrollToPosition(adapter.itemCount)
             adapter.submitList(dataList)
         }
 
@@ -218,7 +233,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
             if (isFirstUsed) {
                 Toast.makeText(requireContext(), "테스트를 해주세요!", Toast.LENGTH_SHORT).show()
                 speechRecognizer.setRecognitionListener(recognitionListener)
-                mBinding.soundVisualizerView.startVisualizing(false)
+                binding.soundVisualizerView.startVisualizing(false)
 
                 isFirstUsed = false
             }
@@ -247,7 +262,7 @@ class SoloFragment : BaseFragment<FragmentSoloBinding, SoloViewModel>() {
         super.onStop()
 
         speechRecognizer.destroy()
-        mBinding.soundVisualizerView.stopVisualizing()
-        mBinding.soundVisualizerView.clearVisualization()
+        binding.soundVisualizerView.stopVisualizing()
+        binding.soundVisualizerView.clearVisualization()
     }
 }

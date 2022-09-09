@@ -1,4 +1,4 @@
-package kr.hs.pandabear.recom.presentation.widget
+package kr.hs.pandabear.recom.domain.utils
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T): Resource<T>(data)

@@ -15,7 +15,7 @@ import java.util.*
 
 abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment() {
 
-    protected lateinit var mBinding: VB
+    protected lateinit var binding: VB
     protected lateinit var mViewModel: VM
     protected abstract val viewModel: VM
 
@@ -28,13 +28,13 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             layoutRes(),
             container
             , false
         )!!
-        return mBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,9 +47,9 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment
 
     private fun setUp() {
         mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
-        mBinding.setVariable(BR.vm, mViewModel)
-        mBinding.lifecycleOwner = this
-        mBinding.executePendingBindings()
+        binding.setVariable(BR.vm, mViewModel)
+        binding.lifecycleOwner = this
+        binding.executePendingBindings()
     }
 
     /**
