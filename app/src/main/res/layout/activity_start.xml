@@ -5,7 +5,7 @@
     <data>
         <variable
             name="activity"
-            type="kr.hs.pandabear.recom.view.activity.StartActivity" />
+            type="kr.hs.pandabear.recom.presentation.feature.start.StartActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

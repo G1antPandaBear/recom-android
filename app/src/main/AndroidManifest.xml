@@ -15,7 +15,7 @@
     </queries>
 
     <application
-        android:name=".widget.RecomApplication"
+        android:name=".RecomApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,12 +27,12 @@
         android:theme="@style/Theme.Recom"
         tools:targetApi="31">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".presentation.feature.main.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
 
-        <activity android:name=".view.activity.StartActivity"
+        <activity android:name=".presentation.feature.start.StartActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>

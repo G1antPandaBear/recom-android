@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="vm"
-            type="kr.hs.pandabear.recom.viewmodel.fragment.SoloViewModel" />
+            type="kr.hs.pandabear.recom.presentation.feature.solo.SoloViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,7 +141,7 @@
             app:layout_constraintTop_toTopOf="@id/btn_play"
             app:tint="@color/color_main500" />
 
-        <kr.hs.pandabear.recom.widget.SoundVisualizerView
+        <kr.hs.pandabear.recom.presentation.widget.view.SoundVisualizerView
             android:id="@+id/sound_visualizer_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
