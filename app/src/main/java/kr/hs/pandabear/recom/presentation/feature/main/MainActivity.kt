@@ -1,6 +1,7 @@
 package kr.hs.pandabear.recom.presentation.feature.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -71,6 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
+    @SuppressLint
     private fun getGPSLocation(): String {
         val locationManager: LocationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
         val currentLocation: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
