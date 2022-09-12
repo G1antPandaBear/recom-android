@@ -43,4 +43,14 @@ object Versions {
 
     const val LOTTIE = "5.2.0"
     const val GMS_LOCATION = "20.0.0"
+
+    const val ORBIT = "4.3.2"
+
+    const val COMPOSE = "1.2.0-rc01"
+    const val NAV = "2.4.1"
+    const val ANI_NAV = "0.24.5-alpha"
+    const val LANDSCAPIST = "2.0.0"
+    const val HILT_NAV = "1.0.0"
+
+    const val ACTIVITY_COMPOSE = "1.6.0-alpha05"
 }
