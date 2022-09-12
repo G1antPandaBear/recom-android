@@ -6,7 +6,7 @@
     <data>
         <variable
             name="speech"
-            type="kr.hs.pandabear.recom.network.model.speech.SpeechInfo" />
+            type="kr.hs.pandabear.recom.domain.model.speech.SpeechInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
