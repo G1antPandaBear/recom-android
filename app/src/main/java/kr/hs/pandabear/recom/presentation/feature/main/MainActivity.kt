@@ -1,7 +1,6 @@
 package kr.hs.pandabear.recom.presentation.feature.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -31,8 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun observerViewModel() {
         requestPermission()
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
-        val navController = navHostFragment.navController
+        supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
 
         val intent = intent
         subject = intent.getStringExtra("subject") ?: "무제"
@@ -72,7 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    @SuppressLint
+    @Suppress("MissingPermission")
     private fun getGPSLocation(): String {
         val locationManager: LocationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
         val currentLocation: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
@@ -93,14 +91,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun requestPermission() {
         requestPermissions(requiredPermission, REQUEST_PERMISSION_CODE)
     }
-
-/*
-    private fun beginTransaction() {
-        val fragment: Fragment = SoloFragment()
-        supportFragmentManager.beginTransaction()
-            .add(mBinding.fragmentContainerView.id, fragment)
-            .commit()
-    }*/
 
     companion object {
         private const val REQUEST_PERMISSION_CODE = 200
