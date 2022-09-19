@@ -7,14 +7,14 @@
 
         <variable
             name="vm"
-            type="kr.hs.pandabear.recom.viewmodel.activity.MainViewModel" />
+            type="kr.hs.pandabear.recom.presentation.feature.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_background"
-        tools:context=".view.activity.MainActivity">
+        tools:context=".presentation.feature.main.MainActivity">
 
         <include
             android:id="@+id/btn_back"

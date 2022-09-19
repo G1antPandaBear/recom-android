@@ -6,7 +6,7 @@
     <data>
         <variable
             name="speech"
-            type="kr.hs.pandabear.recom.network.model.speech.SpeechInfo" />
+            type="kr.hs.pandabear.recom.domain.model.speech.SpeechInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,7 @@
                 android:layout_margin="15dp"
                 android:gravity="top|left"
                 android:lineSpacingExtra="3dp"
-                android:fontFamily="@font/nanum_acr"
+                android:fontFamily="@font/nanum_r"
                 android:text="@{speech.speech}"
                 tools:text="이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.. 이경태 여친 없는 모쏠이다.."
                 tools:ignore="RtlHardcoded" />

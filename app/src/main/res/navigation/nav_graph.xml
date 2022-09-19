@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/soloFragment"
-        android:name="kr.hs.pandabear.recom.view.fragment.SoloFragment"
+        android:name="kr.hs.pandabear.recom.presentation.feature.solo.SoloFragment"
         android:label="SoloFragment" >
         <action
             android:id="@+id/action_soloFragment_to_resultFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
-        android:name="kr.hs.pandabear.recom.view.fragment.ResultFragment"
+        android:name="kr.hs.pandabear.recom.presentation.feature.result.ResultFragment"
         android:label="ResultFragment">
         <argument
             android:name="code"

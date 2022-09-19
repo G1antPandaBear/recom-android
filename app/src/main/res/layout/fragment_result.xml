@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="kr.hs.pandabear.recom.viewmodel.fragment.ResultViewModel" />
+            type="kr.hs.pandabear.recom.presentation.feature.result.ResultViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
