@@ -36,6 +36,10 @@ android {
         jvmTarget = Versions.JVM_TARGET
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
+    }
+
     buildFeatures {
         dataBinding = true
     }
@@ -49,6 +53,19 @@ dependencies {
     testImplementation(UnitTest.JUNIT)
     androidTestImplementation(AndroidTest.ANDROID_JUNIT)
     androidTestImplementation(AndroidTest.ESPRESSO_CORE)
+
+    // compose
+    implementation(Compose.COMPOSE_ACTIVITY)
+    implementation(Compose.COMPOSE_MATERIAL)
+    implementation(Compose.COMPOSE_PREVIEW)
+    implementation(Compose.COMPOSE_UI)
+    implementation(Compose.COMPOSE_NAV)
+    implementation(Compose.COMPOSE_ANI_NAV)
+    implementation(Compose.COMPOSE_UI_TOOL)
+    implementation(Compose.COMPOSE_HILT_NAV)
+
+    implementation(MVI.ORBIT_VIEWMODEL)
+    implementation(MVI.ORBIT_CORE)
 
     // navigation
     implementation(AndroidX.NAVIGATION)

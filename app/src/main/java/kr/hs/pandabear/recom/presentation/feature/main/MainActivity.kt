@@ -73,11 +73,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     @Suppress("MissingPermission")
     private fun getGPSLocation(): String {
         val locationManager: LocationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
-        val currentLocation: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-        val lat = currentLocation.latitude // 위도
-        val lon = currentLocation.longitude // 경도
+        val currentLocation: Location? = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
+        val lat: Double = -1.0
+        val lon: Double = -1.0
+
+        currentLocation?.let {
+            it.latitude // 위도
+            it.longitude // 경도
+        }
         val geocoder = Geocoder(this, Locale.KOREA)
+
         var addr = "주소 오류"
 
         try {

@@ -1,7 +1,7 @@
 object Versions {
     const val KOTLINX_COROUTINES = "1.6.0"
     //const val BUILD_GRADLE = "4.2.1"
-    const val COMPILE_SDK_VERSION = 31
+    const val COMPILE_SDK_VERSION = 32
     //const val BUILD_TOOLS_VERSION = "30.0.3"
     const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 31
@@ -43,4 +43,14 @@ object Versions {
 
     const val LOTTIE = "5.2.0"
     const val GMS_LOCATION = "20.0.0"
+
+    const val ORBIT = "4.3.2"
+
+    const val COMPOSE = "1.2.0-rc01"
+    const val NAV = "2.4.1"
+    const val ANI_NAV = "0.24.5-alpha"
+    const val LANDSCAPIST = "2.0.0"
+    const val HILT_NAV = "1.0.0"
+
+    const val ACTIVITY_COMPOSE = "1.6.0-alpha05"
 }
