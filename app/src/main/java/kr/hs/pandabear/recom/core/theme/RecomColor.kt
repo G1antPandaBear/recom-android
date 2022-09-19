@@ -15,5 +15,4 @@ object RecomColor {
     val Gray500 = Color(0xFF777777)
     val Gray700 = Color(0xFF494949)
     val Black = Color(0xFF000209)
-
 }

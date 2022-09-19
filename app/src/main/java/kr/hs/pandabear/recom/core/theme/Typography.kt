@@ -61,7 +61,6 @@ object RecomTypography {
         fontWeight = FontWeight.Light,
         fontSize = 10.sp,
     )
-
 }
 
 @Composable
